@@ -34,7 +34,6 @@ namespace TennisGame
                 result == false)
                 throw ex;
 
-
             _status = status;
         }
 
@@ -43,7 +42,7 @@ namespace TennisGame
             if (new GameInitialPolicy().Validate(team1.Score, team2.Score, status) is (bool result, Exception ex) &&
                 result == false)
                 throw ex;
-                   
+
             Teams = new[] { team1, team2 };
             _status = status;
         }
@@ -60,30 +59,31 @@ namespace TennisGame
         public void LosePoint(LostPoint cmd)
         {
             var (team1Id, team2Id) = (Teams.First().Id, Teams.ElementAt(1).Id);
-            if (new LosePointPolicy().Validate(cmd, team1Id, team2Id, cmd.Score, _status) is (bool validateResult, Exception exception)  &&
+            if (new LosePointPolicy().Validate(cmd, team1Id, team2Id, cmd.Score, _status) is (bool validateResult, Exception exception) &&
                 validateResult == false)
                 throw exception;
 
             var team = this.GetTeam(cmd.TeamId, cmd.PlayerId);
             team.DeductScore(cmd.Score);
 
-            var result = new ScoreService().Judge(this);
-            this.Score = result.score;
-            _status = result.status;
+            var (score, status) = new ScoreService().Judge(this);
+            this.Score = score;
+            _status = status;
         }
 
         public void WinPoint(WinPoint cmd)
         {
             var (team1Id, team2Id) = (Teams.First().Id, Teams.ElementAt(1).Id);
-            if (new WinPointPolicy().Validate(cmd, team1Id, team2Id, cmd.Score, _status) == false)
-                throw new ArgumentException($"{team1Id}, {team2Id}, {cmd.TeamId}, {cmd.Score}");
+            if (new WinPointPolicy().Validate(cmd, team1Id, team2Id, cmd.Score, _status) is (bool validateResult, Exception exception) &&
+                validateResult == false)
+                throw exception;
 
             var team = this.GetTeam(cmd.TeamId, cmd.PlayerId);
             team.AddScore(cmd.Score);
 
-            var result = new ScoreService().Judge(this);
-            this.Score = result.score;
-            _status = result.status;
+            var (score, status) = new ScoreService().Judge(this);
+            this.Score = score;
+            _status = status;
         }
 
         #endregion Public Methods
