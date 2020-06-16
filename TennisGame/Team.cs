@@ -29,8 +29,9 @@ namespace TennisGame
         {
             Id = id;
             Name = string.IsNullOrWhiteSpace(name) ? id : name;
-            if (new TeamInitialPolicy().Validate(players, score) == false)
-                throw new ArgumentException();
+            if (new TeamInitialPolicy().Validate(players, score) is (bool validateResult, Exception exception) &&
+                 validateResult== false)
+                throw exception;
 
             _players = players.ToArray();
             Score = score;
