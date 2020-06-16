@@ -47,12 +47,15 @@ namespace TennisGame
             _status = status;
         }
 
-        public GameStatus Status => _status;
-        public IReadOnlyCollection<Team> Teams { get; }
-
         #endregion Constructors
 
+        #region Properties
+        public GameStatus Status => _status;
+
+        public IReadOnlyCollection<Team> Teams { get; }
+
         public string Score { get; private set; } = "Love - All";
+        #endregion
 
         #region Public Methods
 
