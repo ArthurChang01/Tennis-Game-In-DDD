@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace TennisGame.Services
 {
-    public class ScoreService
+    internal class ScoreService
     {
         private readonly IDictionary<int, string> _scoreMapping = new Dictionary<int, string>()
         {

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace TennisGame.Policies
 {
-    public class TeamInitialPolicy
+    internal class TeamInitialPolicy
     {
         public bool Validate(IEnumerable<Player> players, int score)
         {

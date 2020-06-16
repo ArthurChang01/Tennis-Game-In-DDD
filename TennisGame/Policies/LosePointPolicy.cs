@@ -3,7 +3,7 @@ using TennisGame.Commands;
 
 namespace TennisGame.Policies
 {
-    public class LosePointPolicy
+    internal class LosePointPolicy
     {
         public bool Validate(LostPoint cmd, string team1Id, string team2Id, int score, GameStatus status)
         {

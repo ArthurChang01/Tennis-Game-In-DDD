@@ -2,7 +2,7 @@
 
 namespace TennisGame.Policies
 {
-    public class GameInitialPolicy
+    internal class GameInitialPolicy
     {
         public bool Validate(int score1, int score2, GameStatus gameStatus)
         {

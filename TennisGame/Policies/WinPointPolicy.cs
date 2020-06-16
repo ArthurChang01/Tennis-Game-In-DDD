@@ -3,7 +3,7 @@ using TennisGame.Commands;
 
 namespace TennisGame.Policies
 {
-    public class WinPointPolicy
+    internal class WinPointPolicy
     {
         public bool Validate(WinPoint cmd, string team1Id, string team2Id, int score, GameStatus status)
         {
