@@ -5,7 +5,7 @@
         public Player(string id, string name, string teamId = "")
         {
             Id = id;
-            this.Name = name;
+            Name = name;
             TeamId = teamId;
         }
 
