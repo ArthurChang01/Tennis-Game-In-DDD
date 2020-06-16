@@ -18,8 +18,8 @@ namespace TennisGame.Commands
 
         #endregion Constructors
 
-        public string PlayerId { get; private set; }
-        public int Score { get; private set; }
-        public string TeamId { get; private set; }
+        public string PlayerId { get; }
+        public int Score { get; }
+        public string TeamId { get; }
     }
 }
