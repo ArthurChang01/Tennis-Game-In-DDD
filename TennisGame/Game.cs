@@ -60,8 +60,9 @@ namespace TennisGame
         public void LosePoint(LostPoint cmd)
         {
             var (team1Id, team2Id) = (Teams.First().Id, Teams.ElementAt(1).Id);
-            if (new LosePointPolicy().Validate(cmd, team1Id, team2Id, cmd.Score, _status) == false)
-                throw new ArgumentException();
+            if (new LosePointPolicy().Validate(cmd, team1Id, team2Id, cmd.Score, _status) is (bool validateResult, Exception exception)  &&
+                validateResult == false)
+                throw exception;
 
             var team = this.GetTeam(cmd.TeamId, cmd.PlayerId);
             team.DeductScore(cmd.Score);
