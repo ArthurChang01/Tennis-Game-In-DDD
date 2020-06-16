@@ -20,5 +20,7 @@ namespace TennisGame.Exceptions
         {
             _message = $"{message}, currently score is {score}";
         }
+
+        public override string Message => _message;
     }
 }
