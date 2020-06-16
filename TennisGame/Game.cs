@@ -26,21 +26,24 @@ namespace TennisGame
         public Game(Player player1, Player player2, int player1Score = 0, int player2Score = 0, GameStatus status = GameStatus.Start)
         {
             Teams = new[] {
-                new Team(Guid.NewGuid().ToString(), string.Empty,player1Score,  player1),
-                new Team(Guid.NewGuid().ToString(), string.Empty,player2Score,  player2)
+                new Team(Guid.NewGuid().ToString(), string.Empty, player1Score,  player1),
+                new Team(Guid.NewGuid().ToString(), string.Empty, player2Score,  player2)
             };
 
-            if (new GameInitialPolicy().Validate(Teams.First().Score, Teams.ElementAt(1).Score, _status) == false)
-                throw new ArgumentException();
+            if (new GameInitialPolicy().Validate(player1Score, player2Score, status) is (bool result, Exception ex) &&
+                result == false)
+                throw ex;
+
 
             _status = status;
         }
 
         public Game(Team team1, Team team2, GameStatus status = GameStatus.Start)
         {
-            if (new GameInitialPolicy().Validate(team1.Score, team2.Score, status) == false)
-                throw new ArgumentException();
-
+            if (new GameInitialPolicy().Validate(team1.Score, team2.Score, status) is (bool result, Exception ex) &&
+                result == false)
+                throw ex;
+                   
             Teams = new[] { team1, team2 };
             _status = status;
         }

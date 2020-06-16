@@ -1,10 +1,11 @@
 ﻿using System;
+using TennisGame.Exceptions;
 
 namespace TennisGame.Policies
 {
     internal class GameInitialPolicy
     {
-        public bool Validate(int score1, int score2, GameStatus gameStatus)
+        public (bool validateResult, Exception exception) Validate(int score1, int score2, GameStatus gameStatus)
         {
             var status = (score1, score2) switch
             {
@@ -13,7 +14,16 @@ namespace TennisGame.Policies
                 _ => GameStatus.Playing
             };
 
-            return gameStatus == status;
+            var validateResult = gameStatus == status;
+            var exception = new GameInitialException()
+            {
+                Team1Score = score1,
+                Team2Score = score2,
+                ExpectedGameStatus = status,
+                ActualGameStatus = gameStatus
+            };
+
+            return (validateResult, validateResult ? null : exception);
         }
     }
 }
