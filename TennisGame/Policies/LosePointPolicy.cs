@@ -8,7 +8,7 @@ namespace TennisGame.Policies
 {
     internal class LosePointPolicy
     {
-        public (bool validateResult, Exception exception) Validate(LostPoint cmd, string team1Id, string team2Id, int score, GameStatus status)
+        public (bool validateResult, Exception exception) Validate(LostPoint cmd, string team1Id, string team2Id,  GameStatus status)
         {
             var exceptions = new List<Exception>();
 
@@ -17,9 +17,6 @@ namespace TennisGame.Policies
 
             if (new[] { team1Id, team2Id }.Any(o => o == cmd.TeamId))
                 exceptions.Add(new LostPointException("The specific team Id is not exist.", cmd.TeamId));
-
-            if (score > 0)
-                exceptions.Add(new LostPointException("Score should be negative.", score));
 
             return (exceptions.Count == 0,  new AggregateException(exceptions));
         }

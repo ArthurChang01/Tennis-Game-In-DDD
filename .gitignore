@@ -35,3 +35,6 @@ msbuild.wrn
 
 # Visual Studio 2015
 .vs/
+/TennisGame.Tests/TennisGame.Tests.v3.ncrunchproject
+/TennisGame/TennisGame.v3.ncrunchproject
+/TennisGame.v3.ncrunchsolution

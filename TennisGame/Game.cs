@@ -9,18 +9,13 @@ namespace TennisGame
 {
     public class Game
     {
-        #region Fields
-
-        private GameStatus _status;
-
-        #endregion Fields
-
         #region Constructors
 
         public Game()
         {
             Teams = new[] { new Team(), new Team() };
-            _status = GameStatus.Start;
+            Status = GameStatus.Start;
+            Score = "Love - All";
         }
 
         public Game(Player player1, Player player2, int player1Score = 0, int player2Score = 0, GameStatus status = GameStatus.Start)
@@ -34,7 +29,8 @@ namespace TennisGame
                 result == false)
                 throw ex;
 
-            _status = status;
+            Status = status;
+            Score = "Love - All";
         }
 
         public Game(Team team1, Team team2, GameStatus status = GameStatus.Start)
@@ -44,54 +40,60 @@ namespace TennisGame
                 throw ex;
 
             Teams = new[] { team1, team2 };
-            _status = status;
+            Status = status;
+            Score = "Love - All";
         }
 
         #endregion Constructors
 
         #region Properties
-        public GameStatus Status => _status;
+
+        public GameStatus Status { get; private set; }
 
         public IReadOnlyCollection<Team> Teams { get; }
 
-        public string Score { get; private set; } = "Love - All";
-        #endregion
+        public string Score { get; private set; }
+
+        #endregion Properties
 
         #region Public Methods
 
         public void LosePoint(LostPoint cmd)
         {
-            var (team1Id, team2Id) = (Teams.First().Id, Teams.ElementAt(1).Id);
-            if (new LosePointPolicy().Validate(cmd, team1Id, team2Id, cmd.Score, _status) is (bool validateResult, Exception exception) &&
+            var (team1Id, team2Id) = GetAllTeamId();
+            if (new LosePointPolicy().Validate(cmd, team1Id, team2Id, Status) is (bool validateResult, Exception exception) &&
                 validateResult == false)
                 throw exception;
 
-            var team = this.GetTeam(cmd.TeamId, cmd.PlayerId);
-            team.DeductScore(cmd.Score);
+            var team = GetTeam(cmd.TeamId, cmd.PlayerId);
+            team.DeductScore();
 
             var (score, status) = new ScoreService().Judge(this);
-            this.Score = score;
-            _status = status;
+            Score = score;
+            Status = status;
         }
 
         public void WinPoint(WinPoint cmd)
         {
-            var (team1Id, team2Id) = (Teams.First().Id, Teams.ElementAt(1).Id);
-            if (new WinPointPolicy().Validate(cmd, team1Id, team2Id, cmd.Score, _status) is (bool validateResult, Exception exception) &&
+            var (team1Id, team2Id) = GetAllTeamId();
+            if (new WinPointPolicy().Validate(cmd, team1Id, team2Id, Status) is (bool validateResult, Exception exception) &&
                 validateResult == false)
                 throw exception;
 
-            var team = this.GetTeam(cmd.TeamId, cmd.PlayerId);
-            team.AddScore(cmd.Score);
+            var team = GetTeam(cmd.TeamId, cmd.PlayerId);
+            team.AddScore();
 
             var (score, status) = new ScoreService().Judge(this);
-            this.Score = score;
-            _status = status;
+            Score = score;
+            Status = status;
         }
 
         #endregion Public Methods
 
         #region Private Methods
+
+        private (string, string) GetAllTeamId()
+            => (Teams.First().Id, Teams.ElementAt(1).Id);
 
         private Team GetTeam(string teamId, string playerId)
             => Teams.First(t => t.Id.Equals(teamId) || t.ExistPlayer(playerId));

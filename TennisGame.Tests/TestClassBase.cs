@@ -35,7 +35,7 @@ namespace TennisGame.Tests
         protected void Win(string teamId, int score)
         {
             for (var i = 0; i < score; i++)
-                _game.WinPoint(new WinPoint(teamId, score: 1));
+                _game.WinPoint(new WinPoint(teamId));
         }
     }
 }
