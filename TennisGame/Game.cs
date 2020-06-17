@@ -66,7 +66,7 @@ namespace TennisGame
                 throw exception;
 
             var team = GetTeam(cmd.TeamId, cmd.PlayerId);
-            team.DeductScore();
+            team.Deduction();
 
             var (score, status) = new ScoreService().Judge(this);
             Score = score;
@@ -81,7 +81,7 @@ namespace TennisGame
                 throw exception;
 
             var team = GetTeam(cmd.TeamId, cmd.PlayerId);
-            team.AddScore();
+            team.AddPoint();
 
             var (score, status) = new ScoreService().Judge(this);
             Score = score;

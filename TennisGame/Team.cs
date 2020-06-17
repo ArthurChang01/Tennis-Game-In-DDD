@@ -55,17 +55,17 @@ namespace TennisGame
 
         #region Public Methods
 
-        public void AddScore(in int score)
+        public void AddPoint()
         {
-            Score += score;
+            Score += 1;
         }
 
-        public void DeductScore(in int score)
+        public void Deduction()
         {
-            if (Score >= score)
-                Score -= score;
-            else
-                Score = 0;
+            if(Score == 0)
+                return;
+
+            Score -= 1;
         }
 
         public bool ExistPlayer(string playerId)
