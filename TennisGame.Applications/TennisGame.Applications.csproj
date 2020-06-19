@@ -8,4 +8,9 @@
     <PackageReference Include="MediatR" Version="8.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TennisGame.Persistent\TennisGame.Persistent.csproj" />
+    <ProjectReference Include="..\TennisGame\TennisGame.csproj" />
+  </ItemGroup>
+
 </Project>
