@@ -2,10 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>TennisGame.Persistent</AssemblyName>
+    <RootNamespace>TennisGame.Persistent</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="MongoDB.Driver" Version="2.10.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TennisGame\TennisGame.csproj" />
   </ItemGroup>
 
 </Project>

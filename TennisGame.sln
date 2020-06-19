@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TennisGame.Tests", "TennisG
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TennisGame.Applications", "TennisGame.Applications\TennisGame.Applications.csproj", "{C1B806E5-E301-4B85-B358-3DB33B38FF64}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TennisGame.Persistents", "TennisGame.Persistents\TennisGame.Persistents.csproj", "{BAD1266E-4D55-429B-910E-BFA55F9D84F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TennisGame.Persistent", "TennisGame.Persistent\TennisGame.Persistent.csproj", "{BAD1266E-4D55-429B-910E-BFA55F9D84F1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TennisGame.Infrastructures", "TennisGame.Infrastructures\TennisGame.Infrastructures.csproj", "{983DABFB-CB99-4F71-9104-C0AC9281D791}"
 EndProject
