@@ -1,4 +1,5 @@
 ﻿using System;
+using TennisGame.Models;
 
 namespace TennisGame.Exceptions
 {

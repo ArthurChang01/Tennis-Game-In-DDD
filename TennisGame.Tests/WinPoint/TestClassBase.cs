@@ -2,6 +2,7 @@
 using System.Linq;
 using FluentAssertions;
 using TennisGame.Exceptions;
+using TennisGame.Models;
 
 namespace TennisGame.Tests.WinPoint
 {

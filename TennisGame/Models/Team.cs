@@ -2,7 +2,7 @@
 using System.Linq;
 using TennisGame.Policies;
 
-namespace TennisGame
+namespace TennisGame.Models
 {
     public class Team
     {
@@ -30,7 +30,7 @@ namespace TennisGame
             Id = id;
             Name = string.IsNullOrWhiteSpace(name) ? id : name;
             if (new TeamInitialPolicy().Validate(players, score) is (bool validateResult, Exception exception) &&
-                 validateResult== false)
+                 validateResult == false)
                 throw exception;
 
             _players = players.ToArray();
@@ -62,7 +62,7 @@ namespace TennisGame
 
         public void Deduction()
         {
-            if(Score == 0)
+            if (Score == 0)
                 return;
 
             Score -= 1;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TennisGame.Commands;
 using TennisGame.Exceptions;
+using TennisGame.Models;
 
 namespace TennisGame.Policies
 {

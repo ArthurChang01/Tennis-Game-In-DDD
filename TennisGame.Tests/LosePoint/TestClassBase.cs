@@ -3,6 +3,7 @@ using System.Linq;
 using FluentAssertions;
 using TennisGame.Commands;
 using TennisGame.Exceptions;
+using TennisGame.Models;
 
 namespace TennisGame.Tests.LosePoint
 {

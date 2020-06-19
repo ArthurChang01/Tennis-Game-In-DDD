@@ -1,4 +1,4 @@
-﻿namespace TennisGame
+﻿namespace TennisGame.Models
 {
     public enum GameStatus
     {

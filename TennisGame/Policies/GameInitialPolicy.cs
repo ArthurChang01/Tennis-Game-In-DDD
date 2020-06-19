@@ -1,5 +1,6 @@
 ﻿using System;
 using TennisGame.Exceptions;
+using TennisGame.Models;
 
 namespace TennisGame.Policies
 {

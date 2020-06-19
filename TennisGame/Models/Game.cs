@@ -5,7 +5,7 @@ using TennisGame.Commands;
 using TennisGame.Policies;
 using TennisGame.Services;
 
-namespace TennisGame
+namespace TennisGame.Models
 {
     public class Game
     {
