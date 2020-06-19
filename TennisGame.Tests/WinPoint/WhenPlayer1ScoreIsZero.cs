@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace TennisGame.Tests
+namespace TennisGame.Tests.WinPoint
 {
     [TestFixture]
     public class WhenPlayer1ScoreIsZero : TestClassBase

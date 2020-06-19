@@ -3,7 +3,7 @@ using System.Linq;
 using FluentAssertions;
 using TennisGame.Commands;
 
-namespace TennisGame.Tests
+namespace TennisGame.Tests.LosePoint
 {
     public class TestClassBase
     {
@@ -17,25 +17,15 @@ namespace TennisGame.Tests
             _game.Score.Should().Be(actual);
         }
 
-        protected void BothWin(int score)
-        {
-            for (int i = 0; i < score; i++)
-            {
-                Win(Team1Id, 1);
-                Win(Team2Id, 1);
-            }
-        }
-
-        protected void SetGame()
+        protected void SetGame(int player1Score = 0, int player2Score = 0)
         {
             _game = new Game(new Player(Guid.NewGuid().ToString(), "player1"),
-                new Player(Guid.NewGuid().ToString(), "player2"));
+                new Player(Guid.NewGuid().ToString(), "player2"), player1Score, player2Score, GameStatus.Playing);
         }
 
-        protected void Win(string teamId, int score)
+        protected void Lose(string teamId)
         {
-            for (var i = 0; i < score; i++)
-                _game.WinPoint(new WinPoint(teamId));
+            _game.LosePoint(new LostPoint(teamId));
         }
     }
 }

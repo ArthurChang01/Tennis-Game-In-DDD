@@ -1,12 +1,12 @@
 ﻿using NUnit.Framework;
 
-namespace TennisGame.Tests
+namespace TennisGame.Tests.WinPoint
 {
     [TestFixture]
     public class WhenBothPlayerAreTheSameScore : TestClassBase
     {
         [Test]
-        public void When_ScoreIs0_Should_LoveAll()
+        public void When_BothAre0_Should_LoveAll()
         {
             SetGame();
 
@@ -14,7 +14,7 @@ namespace TennisGame.Tests
         }
 
         [Test]
-        public void When_ScoreIs1_Should_FifteenAll()
+        public void When_BothAre1_Should_FifteenAll()
         {
             SetGame();
 
@@ -24,7 +24,7 @@ namespace TennisGame.Tests
         }
 
         [Test]
-        public void When_ScoreIs2_Should_ThirtyAll()
+        public void When_BothAre2_Should_ThirtyAll()
         {
             SetGame();
 
@@ -34,7 +34,7 @@ namespace TennisGame.Tests
         }
 
         [Test]
-        public void When_ScoreIs3_Should_Deuce()
+        public void When_BothAre3_Should_Deuce()
         {
             SetGame();
 
@@ -44,11 +44,21 @@ namespace TennisGame.Tests
         }
 
         [Test]
-        public void When_ScoreIs4_Should_Deuce()
+        public void When_BothAre4_Should_Deuce()
         {
             SetGame();
 
             BothWin(4);
+
+            Assert("Deuce");
+        }
+
+        [Test]
+        public void When_BothAre8_Should_Deuce()
+        {
+            SetGame();
+
+            BothWin(8);
 
             Assert("Deuce");
         }
