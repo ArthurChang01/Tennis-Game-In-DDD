@@ -5,26 +5,26 @@ using TennisGame.Applications.DTOs.Requests;
 using TennisGame.Applications.DTOs.Responses;
 using TennisGame.Commands;
 using TennisGame.Models;
-using TennisGame.Persistent;
+using TennisGame.Repositories;
 
 namespace TennisGame.Applications.UseCases
 {
     public class LosePoint : IRequestHandler<LosePointRequest, LosePointResponse>
     {
-        private readonly IMongoRepository<Game> _gameRepository;
+        private readonly IGameRepository _gameRepository;
 
-        public LosePoint(IMongoRepository<Game> gameRepository)
+        public LosePoint(IGameRepository gameRepository)
         {
             _gameRepository = gameRepository;
         }
 
         public async Task<LosePointResponse> Handle(LosePointRequest request, CancellationToken cancellationToken)
         {
-            var game = await _gameRepository.GetOne(o => o.Id.Equals(request.GameId));
+            var game = await _gameRepository.Get(new GameId(request.GameId));
 
             game.LosePoint(new LostPoint(request.TeamId, request.PlayerId));
 
-            await _gameRepository.Update(o => o.Id.Equals(game.Id), game);
+            await _gameRepository.UpdateScore(game);
 
             return new LosePointResponse();
         }

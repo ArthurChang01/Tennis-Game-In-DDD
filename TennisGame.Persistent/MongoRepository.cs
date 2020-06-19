@@ -8,7 +8,7 @@ namespace TennisGame.Persistent
 {
     public abstract class MongoRepository<T> : IMongoRepository<T>
     {
-        private readonly IMongoCollection<T> _collection;
+        protected readonly IMongoCollection<T> _collection;
 
         protected MongoRepository(string conString,
             string dbName, string collectionName)

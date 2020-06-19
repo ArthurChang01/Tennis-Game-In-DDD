@@ -6,10 +6,11 @@ namespace TennisGame.Models
     {
         #region Constructors
 
-        public GameId()
+        public GameId(string requestGameId)
         {
-            Seq = 0;
-            OccuredDate = DateTimeOffset.Now;
+            var arId = requestGameId.Split('-');
+            Seq = int.Parse(arId[1]);
+            OccuredDate = DateTimeOffset.Parse(arId[0]);
         }
 
         public GameId(int seq, DateTimeOffset? occuredDate = null)
