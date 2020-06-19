@@ -6,7 +6,7 @@ using MongoDB.Driver;
 
 namespace TennisGame.Persistent
 {
-    public abstract class MongoRepository<T>
+    public abstract class MongoRepository<T> : IMongoRepository<T>
     {
         private readonly IMongoCollection<T> _collection;
 
