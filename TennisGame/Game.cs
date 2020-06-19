@@ -19,21 +19,14 @@ namespace TennisGame
         }
 
         public Game(Player player1, Player player2, int player1Score = 0, int player2Score = 0, GameStatus status = GameStatus.Start)
+            : this(new Team(Guid.NewGuid().ToString(), string.Empty, player1Score, player1),
+                new Team(Guid.NewGuid().ToString(), string.Empty, player2Score, player2),
+                status)
         {
-            Teams = new[] {
-                new Team(Guid.NewGuid().ToString(), string.Empty, player1Score,  player1),
-                new Team(Guid.NewGuid().ToString(), string.Empty, player2Score,  player2)
-            };
-
-            if (new GameInitialPolicy().Validate(player1Score, player2Score, status) is (bool result, Exception ex) &&
-                result == false)
-                throw ex;
-
-            Status = status;
-            Score = "Love - All";
         }
 
         public Game(Team team1, Team team2, GameStatus status = GameStatus.Start)
+            : this()
         {
             if (new GameInitialPolicy().Validate(team1.Score, team2.Score, status) is (bool result, Exception ex) &&
                 result == false)
@@ -41,7 +34,6 @@ namespace TennisGame
 
             Teams = new[] { team1, team2 };
             Status = status;
-            Score = "Love - All";
         }
 
         #endregion Constructors

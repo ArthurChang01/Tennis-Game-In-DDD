@@ -10,7 +10,7 @@ namespace TennisGame.Policies
             var status = (score1, score2) switch
             {
                 (0, 0) => GameStatus.Start,
-                _ when (score1 >= 4 || score2 >= 4) && Math.Abs(score1 - score2) == 2 => GameStatus.End,
+                _ when (score1 >= 4 || score2 >= 4) && Math.Abs(score1 - score2) >= 2 => GameStatus.End,
                 _ => GameStatus.Playing
             };
 
@@ -19,8 +19,8 @@ namespace TennisGame.Policies
             {
                 Team1Score = score1,
                 Team2Score = score2,
-                ExpectedGameStatus = status,
-                ActualGameStatus = gameStatus
+                ExpectedGameStatus = gameStatus,
+                ActualGameStatus = status
             };
 
             return (validateResult, validateResult ? null : exception);
