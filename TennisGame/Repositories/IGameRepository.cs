@@ -10,9 +10,9 @@ namespace TennisGame.Repositories
     {
         Task<IEnumerable<Game>> GetAll();
 
-        Task<IEnumerable<Game>> GetBy(Expression<Func<bool, Game>> @by);
+        Task<IEnumerable<Game>> GetBy(Expression<Func<Game, bool>> @by);
 
-        Task<Game> Get(Expression<Func<bool, Game>> @by);
+        Task<Game> Get(Expression<Func<Game, bool>> @by);
 
         Task Add(Game game);
 

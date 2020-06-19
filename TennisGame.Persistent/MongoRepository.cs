@@ -5,7 +5,7 @@ namespace TennisGame.Persistent
 {
     public class MongoRepository
     {
-        private IMongoCollection<Game> _collection;
+        protected IMongoCollection<Game> _collection;
 
         public MongoRepository(string conString)
         {

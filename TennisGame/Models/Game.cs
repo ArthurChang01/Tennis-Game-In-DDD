@@ -13,25 +13,25 @@ namespace TennisGame.Models
 
         public Game()
         {
-            Teams = new[] { new Team(), new Team() };
             Status = GameStatus.Start;
             Score = "Love - All";
         }
 
-        public Game(Player player1, Player player2, int player1Score = 0, int player2Score = 0, GameStatus status = GameStatus.Start)
+        public Game(Player player1, Player player2, int player1Score = 0, int player2Score = 0, GameStatus status = GameStatus.Start, int seq = 0)
             : this(new Team(Guid.NewGuid().ToString(), string.Empty, player1Score, player1),
                 new Team(Guid.NewGuid().ToString(), string.Empty, player2Score, player2),
-                status)
+                status, seq)
         {
         }
 
-        public Game(Team team1, Team team2, GameStatus status = GameStatus.Start)
+        public Game(Team team1, Team team2, GameStatus status = GameStatus.Start, int seq = 0)
             : this()
         {
             if (new GameInitialPolicy().Validate(team1.Score, team2.Score, status) is (bool result, Exception ex) &&
                 result == false)
                 throw ex;
 
+            Id = new GameId(seq);
             Teams = new[] { team1, team2 };
             Status = status;
         }
@@ -39,6 +39,8 @@ namespace TennisGame.Models
         #endregion Constructors
 
         #region Properties
+
+        public GameId Id { get; }
 
         public GameStatus Status { get; private set; }
 
