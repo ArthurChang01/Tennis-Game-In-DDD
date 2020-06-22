@@ -31,7 +31,7 @@ namespace TennisGame.Tests.LosePoint
 
         protected void SetGame(int player1Score = 0, int player2Score = 0, GameStatus status = GameStatus.Playing)
         {
-            _game = new Game(new Player(Guid.NewGuid().ToString(), "player1"),
+            _game = new Game(new GameId(1), new Player(Guid.NewGuid().ToString(), "player1"),
                 new Player(Guid.NewGuid().ToString(), "player2"), player1Score, player2Score, status);
         }
 

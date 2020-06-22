@@ -2,49 +2,50 @@
 using System.Collections.Generic;
 using System.Linq;
 using TennisGame.Commands;
+using TennisGame.Core;
+using TennisGame.Events;
 using TennisGame.Policies;
 using TennisGame.Services;
 
 namespace TennisGame.Models
 {
-    public class Game
+    public class Game : AggregateRoot<GameId>
     {
         #region Constructors
 
         public Game()
         {
-            Status = GameStatus.Start;
-            Score = "Love - All";
         }
 
-        public Game(Player player1, Player player2, int player1Score = 0, int player2Score = 0, GameStatus status = GameStatus.Start, int seq = 0)
-            : this(new Team(Guid.NewGuid().ToString(), string.Empty, player1Score, player1),
+        public Game(GameId id, Player player1, Player player2, int player1Score = 0, int player2Score = 0,
+            GameStatus status = GameStatus.Start, int appliedVersion = 1)
+            : this(id, new Team(Guid.NewGuid().ToString(), string.Empty, player1Score, player1),
                 new Team(Guid.NewGuid().ToString(), string.Empty, player2Score, player2),
-                status, seq)
+                status, appliedVersion)
         {
         }
 
-        public Game(Team team1, Team team2, GameStatus status = GameStatus.Start, int seq = 0)
-            : this()
+        public Game(GameId id, Team team1, Team team2, GameStatus status = GameStatus.Start, int appliedVersion = 1)
+            : base(id, appliedVersion)
         {
             if (new GameInitialPolicy().Validate(team1.Score, team2.Score, status) is (bool result, Exception ex) &&
                 result == false)
                 throw ex;
 
-            Id = new GameId(seq);
             Teams = new[] { team1, team2 };
             Status = status;
+            Score = "Love - All";
+
+            RaiseEvent(new GameInitialEvent(EventVersion, Id, Teams, Status, Score));
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public GameId Id { get; }
-
         public GameStatus Status { get; private set; }
 
-        public IReadOnlyCollection<Team> Teams { get; }
+        public IReadOnlyCollection<Team> Teams { get; private set; }
 
         public string Score { get; private set; }
 
@@ -63,6 +64,8 @@ namespace TennisGame.Models
             team.Deduction();
 
             var (score, status) = new ScoreService().Judge(this);
+            RaiseEvent(new LosePointEvent(EventVersion, cmd.TeamId, cmd.PlayerId, score, status));
+
             Score = score;
             Status = status;
         }
@@ -78,6 +81,8 @@ namespace TennisGame.Models
             team.AddPoint();
 
             var (score, status) = new ScoreService().Judge(this);
+            RaiseEvent(new WinPointEvent(EventVersion, cmd.TeamId, cmd.PlayerId, score, status));
+
             Score = score;
             Status = status;
         }
@@ -93,5 +98,27 @@ namespace TennisGame.Models
             => Teams.First(t => t.Id.Equals(teamId) || t.ExistPlayer(playerId));
 
         #endregion Private Methods
+
+        protected override void ApplyEvent(DomainEvent @event)
+        {
+            switch (@event)
+            {
+                case GameInitialEvent evt:
+                    Id = evt.Id;
+                    EventVersion = evt.Version;
+                    Teams = evt.Teams;
+                    Status = evt.Status;
+                    Score = evt.Score;
+                    break;
+
+                case WinPointEvent evt:
+                    WinPoint(new WinPoint(evt.TeamId, evt.PlayerId));
+                    break;
+
+                case LosePointEvent evt:
+                    LosePoint(new LostPoint(evt.TeamId, evt.PlayerId));
+                    break;
+            }
+        }
     }
 }

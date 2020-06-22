@@ -25,9 +25,13 @@ namespace TennisGame.Models
 
         #endregion Constructors
 
+        #region Properties
+
         public int Seq { get; }
 
         public DateTimeOffset OccuredDate { get; }
+
+        #endregion Properties
 
         public override string ToString()
             => $"{OccuredDate:yyyyMMdd}-{Seq}";

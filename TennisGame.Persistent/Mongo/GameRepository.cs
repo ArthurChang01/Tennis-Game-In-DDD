@@ -3,7 +3,7 @@ using MongoDB.Driver;
 using TennisGame.Models;
 using TennisGame.Repositories;
 
-namespace TennisGame.Persistent
+namespace TennisGame.Persistent.Mongo
 {
     public class GameRepository : MongoRepository<Game>, IGameRepository
     {

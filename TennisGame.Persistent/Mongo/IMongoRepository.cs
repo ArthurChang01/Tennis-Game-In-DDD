@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace TennisGame.Persistent
+namespace TennisGame.Persistent.Mongo
 {
     public interface IMongoRepository<T>
     {

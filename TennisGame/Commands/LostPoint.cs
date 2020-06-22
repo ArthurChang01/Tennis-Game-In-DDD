@@ -4,6 +4,8 @@ namespace TennisGame.Commands
 {
     public class LostPoint
     {
+        #region Constructors
+
         public LostPoint(string teamId = "", string playerId = "")
         {
             if (string.IsNullOrWhiteSpace(teamId) && string.IsNullOrWhiteSpace(playerId))
@@ -13,8 +15,14 @@ namespace TennisGame.Commands
             PlayerId = playerId;
         }
 
+        #endregion Constructors
+
+        #region Properties
+
         public string TeamId { get; }
 
         public string PlayerId { get; }
+
+        #endregion Properties
     }
 }

@@ -5,7 +5,13 @@ namespace TennisGame.Exceptions
 {
     public class LostPointException : Exception
     {
+        #region Fields
+
         private readonly string _message;
+
+        #endregion Fields
+
+        #region Constructors
 
         public LostPointException(string message, GameStatus status)
         {
@@ -21,6 +27,8 @@ namespace TennisGame.Exceptions
         {
             _message = $"{message}, currently score is {score}";
         }
+
+        #endregion Constructors
 
         public override string Message => _message;
     }

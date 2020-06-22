@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 
-namespace TennisGame.Persistent
+namespace TennisGame.Persistent.Mongo
 {
     public abstract class MongoRepository<T> : IMongoRepository<T>
     {
