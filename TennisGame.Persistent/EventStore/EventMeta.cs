@@ -1,6 +1,6 @@
 ﻿namespace TennisGame.Persistent.EventStore
 {
-    internal struct EventMeta
+    public struct EventMeta
     {
         public string EventType { get; set; }
     }

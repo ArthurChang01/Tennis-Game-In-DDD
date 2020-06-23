@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using EventStore.ClientAPI;
 using TennisGame.Core;
-using TennisGame.Persistent.EventStore.JsonConverters;
 
 namespace TennisGame.Persistent.EventStore
 {
@@ -15,16 +12,18 @@ namespace TennisGame.Persistent.EventStore
     {
         #region Fields
 
-        private readonly ESConnection _con;
+        private readonly IESConnection _con;
+        private readonly IEventSerializer _serializer;
         private readonly string _streamBaseName;
 
         #endregion Fields
 
         #region Constructors
 
-        public EventRepository(ESConnection con)
+        public EventRepository(IESConnection con, IEventSerializer serializer)
         {
             _con = con;
+            _serializer = serializer;
 
             _streamBaseName = typeof(T).Name;
         }
@@ -46,7 +45,7 @@ namespace TennisGame.Persistent.EventStore
             {
                 foreach (var @event in aggregate.Events)
                 {
-                    var eventData = Map(@event);
+                    var eventData = _serializer.Convert(@event);
                     await tran.WriteAsync(eventData);
                 }
 
@@ -73,7 +72,7 @@ namespace TennisGame.Persistent.EventStore
             {
                 currentSlice = await con.ReadStreamEventsForwardAsync(streamName, nextSliceStart, 200, false);
                 nextSliceStart = currentSlice.NextEventNumber;
-                events.AddRange(currentSlice.Events.Select(Map));
+                events.AddRange(currentSlice.Events.Select(_serializer.Convert));
             } while (!currentSlice.IsEndOfStream);
 
             return (T)AggregateRoot<TId>.Create<T>(new T(), events.OrderBy(o => o.OccurredDate));
@@ -82,35 +81,6 @@ namespace TennisGame.Persistent.EventStore
         #endregion Public Methods
 
         #region Private Methods
-
-        private DomainEvent Map(ResolvedEvent @event)
-        {
-            var meta = JsonSerializer.Deserialize<EventMeta>(@event.Event.Metadata);
-            var opt = new JsonSerializerOptions();
-            opt.Converters.Add(new GameIdConverter());
-            opt.Converters.Add(new PlayersConverter());
-            opt.Converters.Add(new TeamConverter());
-
-            return JsonSerializer.Deserialize(@event.Event.Data, Type.GetType(meta.EventType), opt) as DomainEvent;
-        }
-
-        private EventData Map(DomainEvent @event)
-        {
-            var json = JsonSerializer.Serialize(@event,
-                new JsonSerializerOptions() { IgnoreNullValues = false, MaxDepth = int.MaxValue }
-                );
-            var data = Encoding.UTF8.GetBytes(json);
-
-            var evnType = @event.GetType();
-            var meta = new EventMeta()
-            {
-                EventType = evnType.AssemblyQualifiedName
-            };
-            var metaJson = JsonSerializer.Serialize(meta);
-            var metaData = Encoding.UTF8.GetBytes(metaJson);
-
-            return new EventData(Guid.Parse(@event.Id), evnType.Name, true, data, metaData);
-        }
 
         private string GetStreamName(object id)
             => $"{_streamBaseName}_{id}";

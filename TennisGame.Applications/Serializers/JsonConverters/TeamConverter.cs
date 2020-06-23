@@ -4,7 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using TennisGame.Models;
 
-namespace TennisGame.Persistent.EventStore.JsonConverters
+namespace TennisGame.Applications.Serializers.JsonConverters
 {
     public class TeamConverter : JsonConverter<Team>
     {

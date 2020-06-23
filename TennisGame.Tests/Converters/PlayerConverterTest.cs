@@ -1,8 +1,8 @@
 ﻿using System.Text.Json;
 using FluentAssertions;
 using NUnit.Framework;
+using TennisGame.Applications.Serializers.JsonConverters;
 using TennisGame.Models;
-using TennisGame.Persistent.EventStore.JsonConverters;
 
 namespace TennisGame.Tests.Converters
 {
