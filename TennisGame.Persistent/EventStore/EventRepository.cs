@@ -40,16 +40,19 @@ namespace TennisGame.Persistent.EventStore
             var con = await _con.GetConnectionAsync();
             var streamName = GetStreamName(aggregate.Id);
 
-            using var tran = await con.StartTransactionAsync(streamName, aggregate.EventVersion);
+            EventStoreTransaction tran = null;
             try
             {
-                foreach (var @event in aggregate.Events)
+                using (tran = await con.StartTransactionAsync(streamName, ExpectedVersion.Any))
                 {
-                    var eventData = _serializer.Convert(@event);
-                    await tran.WriteAsync(eventData);
-                }
+                    foreach (var @event in aggregate.Events)
+                    {
+                        var eventData = _serializer.Convert(@event);
+                        await tran.WriteAsync(eventData);
+                    }
 
-                await tran.CommitAsync();
+                    await tran.CommitAsync();
+                }
             }
             catch
             {

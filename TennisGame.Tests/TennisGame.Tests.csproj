@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TennisGame.Applications\TennisGame.Applications.csproj" />
+    <ProjectReference Include="..\TennisGame.Persistent\TennisGame.Persistent.csproj" />
     <ProjectReference Include="..\TennisGame\TennisGame.csproj" />
   </ItemGroup>
 
