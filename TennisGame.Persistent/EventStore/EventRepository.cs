@@ -75,7 +75,7 @@ namespace TennisGame.Persistent.EventStore
                 events.AddRange(currentSlice.Events.Select(_serializer.Convert));
             } while (!currentSlice.IsEndOfStream);
 
-            return (T)AggregateRoot<TId>.Create<T>(new T(), events.OrderBy(o => o.OccurredDate));
+            return (T)AggregateRoot<TId>.Create<T>(new T(), events.OrderBy(o => o.OccuredDate));
         }
 
         #endregion Public Methods

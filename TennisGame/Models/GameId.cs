@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace TennisGame.Models
 {
@@ -8,13 +9,15 @@ namespace TennisGame.Models
 
         public GameId()
         {
+            Seq = 0;
+            OccuredDate = DateTimeOffset.Now;
         }
 
         public GameId(string requestGameId)
         {
             var arId = requestGameId.Split('-');
             Seq = int.Parse(arId[1]);
-            OccuredDate = DateTimeOffset.Parse(arId[0]);
+            OccuredDate = DateTimeOffset.ParseExact(arId[0], "yyyyMMdd", CultureInfo.InvariantCulture);
         }
 
         public GameId(int seq, DateTimeOffset? occuredDate = null)

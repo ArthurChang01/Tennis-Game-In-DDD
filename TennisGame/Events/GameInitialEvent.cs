@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TennisGame.Core;
 using TennisGame.Models;
 
@@ -8,10 +9,23 @@ namespace TennisGame.Events
     {
         #region Constructors
 
-        public GameInitialEvent(int version, GameId id, IReadOnlyCollection<Team> teams, GameStatus status, string score)
+        public GameInitialEvent()
+        {
+        }
+
+        public GameInitialEvent(string id, int version, DateTimeOffset occuredDate, GameId gameId, IReadOnlyCollection<Team> teams, GameStatus status, string score)
+            : base(id, version, occuredDate)
+        {
+            GameId = gameId;
+            Teams = teams;
+            Status = status;
+            Score = score;
+        }
+
+        public GameInitialEvent(int version, GameId gameId, IReadOnlyCollection<Team> teams, GameStatus status, string score)
             : base(version)
         {
-            Id = id;
+            GameId = gameId;
             Teams = teams;
             Status = status;
             Score = score;
@@ -21,7 +35,7 @@ namespace TennisGame.Events
 
         #region Properties
 
-        public GameId Id { get; }
+        public GameId GameId { get; }
 
         public IReadOnlyCollection<Team> Teams { get; }
 
@@ -30,5 +44,22 @@ namespace TennisGame.Events
         public string Score { get; }
 
         #endregion Properties
+
+        public override bool Equals(object? obj)
+        {
+            if (!(obj is GameInitialEvent target))
+                return false;
+
+            if (ReferenceEquals(this, obj))
+                return true;
+
+            return Equals(this, target) && GameId.Equals(target.GameId) && Status.Equals(target.Status) &&
+                   Score.Equals(target.Score);
+        }
+
+        public override int GetHashCode()
+        {
+            return (GetHashCode(this), GameId, Teams, Status, Score).GetHashCode();
+        }
     }
 }

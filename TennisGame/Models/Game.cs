@@ -104,7 +104,7 @@ namespace TennisGame.Models
             switch (@event)
             {
                 case GameInitialEvent evt:
-                    Id = evt.Id;
+                    Id = evt.GameId;
                     EventVersion = evt.Version;
                     Teams = evt.Teams;
                     Status = evt.Status;

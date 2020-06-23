@@ -22,6 +22,9 @@ namespace TennisGame.Applications.Serializers
             _opt.Converters.Add(new GameIdConverter());
             _opt.Converters.Add(new PlayersConverter());
             _opt.Converters.Add(new TeamConverter());
+            _opt.Converters.Add(new GameInitialEventConverter());
+            _opt.Converters.Add(new LosePointEventConverter());
+            _opt.Converters.Add(new WinPointEventConverter());
         }
 
         public DomainEvent Convert(ResolvedEvent @event)
