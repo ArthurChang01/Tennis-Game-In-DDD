@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TennisGame.Policies;
 
@@ -46,8 +47,11 @@ namespace TennisGame.Models
 
         #region Properties
 
-        public string Id { get; private set; }
+        public string Id { get; }
+
         public string Name { get; }
+
+        public IReadOnlyCollection<Player> Players => _players;
 
         public int Score { get; private set; } = 0;
 

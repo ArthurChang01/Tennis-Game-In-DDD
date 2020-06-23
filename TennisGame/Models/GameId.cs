@@ -6,6 +6,10 @@ namespace TennisGame.Models
     {
         #region Constructors
 
+        public GameId()
+        {
+        }
+
         public GameId(string requestGameId)
         {
             var arId = requestGameId.Split('-');

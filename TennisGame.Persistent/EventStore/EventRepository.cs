@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using EventStore.ClientAPI;
 using TennisGame.Core;
+using TennisGame.Persistent.EventStore.JsonConverters;
 
 namespace TennisGame.Persistent.EventStore
 {
@@ -85,7 +86,12 @@ namespace TennisGame.Persistent.EventStore
         private DomainEvent Map(ResolvedEvent @event)
         {
             var meta = JsonSerializer.Deserialize<EventMeta>(@event.Event.Metadata);
-            return JsonSerializer.Deserialize(@event.Event.Data, Type.GetType(meta.EventType)) as DomainEvent;
+            var opt = new JsonSerializerOptions();
+            opt.Converters.Add(new GameIdConverter());
+            opt.Converters.Add(new PlayersConverter());
+            opt.Converters.Add(new TeamConverter());
+
+            return JsonSerializer.Deserialize(@event.Event.Data, Type.GetType(meta.EventType), opt) as DomainEvent;
         }
 
         private EventData Map(DomainEvent @event)
