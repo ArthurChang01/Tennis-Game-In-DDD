@@ -44,7 +44,7 @@ namespace TennisGame.Core
                 ag.ApplyEvent(@event);
             }
 
-            ag.ClearEvent();
+            ag.ClearUncommittedEvents();
 
             return ag;
         }
@@ -65,11 +65,25 @@ namespace TennisGame.Core
 
         #region Private Methods
 
-        private void ClearEvent()
+        private void ClearUncommittedEvents()
         {
             _events.Clear();
         }
 
         #endregion Private Methods
+
+        public override bool Equals(object? obj)
+        {
+            if (!(obj is AggregateRoot<TId> target))
+                return false;
+
+            if (ReferenceEquals(this, target))
+                return true;
+
+            return Id.Equals(target.Id);
+        }
+
+        public override int GetHashCode()
+            => Id.GetHashCode();
     }
 }
