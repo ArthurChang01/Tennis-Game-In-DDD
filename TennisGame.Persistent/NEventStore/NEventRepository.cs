@@ -2,20 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using NEventStore;
-using NEventStore.Logging;
 using NEventStore.Serialization;
 using TennisGame.Core;
 using TennisGame.Models;
+using TennisGame.Persistent.NEventStore.Configs;
 
 namespace TennisGame.Persistent.NEventStore
 {
-    public class NEventRepository<T, TId> : IDisposable
+    public sealed class NEventRepository<T, TId> : IDisposable
         where T : AggregateRoot<TId>, new()
     {
         #region Fields
 
         private IStoreEvents _store;
         private bool _disposedValue;
+        private readonly int _snapShotThreshold;
 
         #endregion Fields
 
@@ -28,6 +29,8 @@ namespace TennisGame.Persistent.NEventStore
 
         public NEventRepository(NEventConfig config)
         {
+            _snapShotThreshold = config.SnapShotThreshold;
+
             var preStore = Wireup.Init();
             if (config.Log.NeedLog)
                 preStore = preStore.LogTo(config.Log.Logger);
@@ -84,15 +87,24 @@ namespace TennisGame.Persistent.NEventStore
 
             stream.CommitChanges(Guid.NewGuid());
 
-            if (stream.StreamRevision % 200 == 0)
+            if (NeedToSnapShot(stream))
                 _store.Advanced.AddSnapshot(new Snapshot(streamId, stream.StreamRevision, game));
         }
 
         #endregion Public Methods
 
+        #region Private Methods
+
+        private bool NeedToSnapShot(IEventStream stream)
+        {
+            return stream.StreamRevision % _snapShotThreshold == 0;
+        }
+
+        #endregion Private Methods
+
         #region Dispose Methods
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (!_disposedValue)
             {
@@ -113,97 +125,5 @@ namespace TennisGame.Persistent.NEventStore
         }
 
         #endregion Dispose Methods
-    }
-
-    public class NEventConfig
-    {
-        #region Cosntructors
-
-        public NEventConfig()
-        {
-            Log = new LogSetting();
-            Hook = new HookSetting();
-            StorageEngine = new StorageEngineSetting();
-        }
-
-        public NEventConfig(LogSetting log, HookSetting hook, StorageEngineSetting store)
-        {
-            Log = log;
-            Hook = hook;
-            StorageEngine = store;
-        }
-
-        #endregion Cosntructors
-
-        public LogSetting Log { get; }
-        public HookSetting Hook { get; }
-        public StorageEngineSetting StorageEngine { get; }
-    }
-
-    public class StorageEngineSetting
-    {
-        #region Constructors
-
-        public StorageEngineSetting()
-        {
-            InMemory = true;
-            ConnectionString = string.Empty;
-        }
-
-        public StorageEngineSetting(bool inMemory, string connectionString)
-        {
-            InMemory = inMemory;
-            ConnectionString = connectionString;
-        }
-
-        #endregion Constructors
-
-        public bool InMemory { get; }
-        public string ConnectionString { get; }
-    }
-
-    public class HookSetting
-    {
-        #region Constructors
-
-        public HookSetting()
-        {
-            HasHook = false;
-            Hooks = new List<IPipelineHook>();
-        }
-
-        public HookSetting(bool hasHook, IEnumerable<IPipelineHook> hooks)
-        {
-            HasHook = hasHook;
-            Hooks = hooks;
-        }
-
-        #endregion Constructors
-
-        public bool HasHook { get; }
-        public IEnumerable<IPipelineHook> Hooks { get; }
-    }
-
-    public class LogSetting
-    {
-        #region Constructors
-
-        public LogSetting()
-        {
-            NeedLog = false;
-            Logger = null;
-        }
-
-        public LogSetting(bool needLog, Func<Type, ILog> logger)
-        {
-            NeedLog = needLog;
-            Logger = logger;
-        }
-
-        #endregion Constructors
-
-        public bool NeedLog { get; }
-
-        public Func<Type, ILog> Logger { get; }
     }
 }
