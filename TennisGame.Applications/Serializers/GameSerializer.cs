@@ -4,7 +4,6 @@ using System.Text.Json;
 using EventStore.ClientAPI;
 using TennisGame.Applications.Serializers.JsonConverters;
 using TennisGame.Core;
-using TennisGame.Events;
 using TennisGame.Persistent.EventStore;
 
 namespace TennisGame.Applications.Serializers
@@ -32,12 +31,12 @@ namespace TennisGame.Applications.Serializers
         {
             var meta = JsonSerializer.Deserialize<EventMeta>(@event.Event.Metadata);
 
-            return JsonSerializer.Deserialize(@event.Event.Data, Type.GetType(meta.EventType), _opt) as DomainEvent;
+            return (DomainEvent)JsonSerializer.Deserialize(@event.Event.Data, Type.GetType(meta.EventType), _opt);
         }
 
         public EventData Convert(DomainEvent @event)
         {
-            var json = GetDataJsonString(@event);
+            var json = JsonSerializer.Serialize(@event, @event.GetType(), _opt);
             var data = Encoding.UTF8.GetBytes(json);
 
             var evnType = @event.GetType();
@@ -50,14 +49,5 @@ namespace TennisGame.Applications.Serializers
 
             return new EventData(Guid.Parse(@event.Id), evnType.Name, true, data, metaData);
         }
-
-        private string GetDataJsonString(DomainEvent @event)
-            => @event switch
-            {
-                GameInitialEvent evt => JsonSerializer.Serialize(evt, _opt),
-                WinPointEvent evt => JsonSerializer.Serialize(evt, _opt),
-                LosePointEvent evt => JsonSerializer.Serialize(evt, _opt),
-                _ => string.Empty
-            };
     }
 }

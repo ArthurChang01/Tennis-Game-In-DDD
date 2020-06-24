@@ -12,17 +12,13 @@ namespace TennisGame.Events
         {
         }
 
-        public LosePointEvent(string id, int version, DateTimeOffset occuredDate, string teamId, string playerId, string newScore, GameStatus newStatus)
-            : base(id, version, occuredDate)
+        public LosePointEvent(string teamId, string playerId, string newScore, GameStatus newStatus)
+            : this(Guid.NewGuid().ToString(), 1, DateTimeOffset.Now, teamId, playerId, newScore, newStatus)
         {
-            TeamId = teamId;
-            PlayerId = playerId;
-            NewScore = newScore;
-            NewStatus = newStatus;
         }
 
-        public LosePointEvent(int version, string teamId, string playerId, string newScore, GameStatus newStatus)
-            : base(version)
+        public LosePointEvent(string id, int version, DateTimeOffset occuredDate, string teamId, string playerId, string newScore, GameStatus newStatus)
+            : base(id, version, occuredDate)
         {
             TeamId = teamId;
             PlayerId = playerId;

@@ -55,6 +55,7 @@ namespace TennisGame.Core
 
         protected void RaiseEvent(DomainEvent @event)
         {
+            @event.Version = EventVersion;
             _events.Add(@event);
         }
 

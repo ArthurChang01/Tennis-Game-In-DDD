@@ -43,10 +43,10 @@ namespace TennisGame.Tests.InitialGame
             var teams = new List<Team>() { new Team(), new Team() };
             var events = new List<DomainEvent>()
             {
-                new GameInitialEvent(1, new GameId(1), teams, GameStatus.Playing, "Love - All"),
-                new WinPointEvent(1, teams.First().Id, string.Empty, "Fifteen - Love", GameStatus.Playing),
-                new LosePointEvent(1, teams.First().Id, string.Empty, "Love - All", GameStatus.Playing ),
-                new WinPointEvent(1, teams.First().Id, string.Empty, "Fifteen - Love", GameStatus.Playing)
+                new GameInitialEvent( new GameId(1), teams, GameStatus.Playing, "Love - All"),
+                new WinPointEvent( teams.First().Id, string.Empty, "Fifteen - Love", GameStatus.Playing),
+                new LosePointEvent( teams.First().Id, string.Empty, "Love - All", GameStatus.Playing ),
+                new WinPointEvent( teams.First().Id, string.Empty, "Fifteen - Love", GameStatus.Playing)
             };
             Game game = null;
 

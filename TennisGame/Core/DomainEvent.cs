@@ -29,7 +29,7 @@ namespace TennisGame.Core
 
         public string Id { get; }
 
-        public int Version { get; }
+        public int Version { get; internal set; }
 
         public DateTimeOffset OccuredDate { get; }
 

@@ -13,17 +13,13 @@ namespace TennisGame.Events
         {
         }
 
-        public GameInitialEvent(string id, int version, DateTimeOffset occuredDate, GameId gameId, IReadOnlyCollection<Team> teams, GameStatus status, string score)
-            : base(id, version, occuredDate)
+        public GameInitialEvent(GameId gameId, IReadOnlyCollection<Team> teams, GameStatus status, string score)
+            : this(Guid.NewGuid().ToString(), 1, DateTimeOffset.Now, gameId, teams, status, score)
         {
-            GameId = gameId;
-            Teams = teams;
-            Status = status;
-            Score = score;
         }
 
-        public GameInitialEvent(int version, GameId gameId, IReadOnlyCollection<Team> teams, GameStatus status, string score)
-            : base(version)
+        public GameInitialEvent(string id, int version, DateTimeOffset occuredDate, GameId gameId, IReadOnlyCollection<Team> teams, GameStatus status, string score)
+            : base(id, version, occuredDate)
         {
             GameId = gameId;
             Teams = teams;

@@ -14,7 +14,7 @@ namespace TennisGame.Tests.Persistents
     [TestFixture]
     public class ESRepositoryTest
     {
-        private EventRepository<Game, GameId> _repo;
+        private readonly EventRepository<Game, GameId> _repo;
 
         public ESRepositoryTest()
         {
@@ -35,7 +35,7 @@ namespace TennisGame.Tests.Persistents
         }
 
         [Test]
-        public async Task Fetch()
+        public void Fetch()
         {
             Game game = null;
             Action act = () => game = _repo.Rehydrate(new GameId(1)).GetAwaiter().GetResult();

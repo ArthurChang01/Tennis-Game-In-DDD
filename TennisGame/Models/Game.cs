@@ -36,7 +36,7 @@ namespace TennisGame.Models
             Status = status;
             Score = "Love - All";
 
-            RaiseEvent(new GameInitialEvent(EventVersion, Id, Teams, Status, Score));
+            RaiseEvent(new GameInitialEvent(Id, Teams, Status, Score));
         }
 
         #endregion Constructors
@@ -64,7 +64,7 @@ namespace TennisGame.Models
             team.Deduction();
 
             var (score, status) = new ScoreService().Judge(this);
-            RaiseEvent(new LosePointEvent(EventVersion, cmd.TeamId, cmd.PlayerId, score, status));
+            RaiseEvent(new LosePointEvent(cmd.TeamId, cmd.PlayerId, score, status));
 
             Score = score;
             Status = status;
@@ -81,7 +81,7 @@ namespace TennisGame.Models
             team.AddPoint();
 
             var (score, status) = new ScoreService().Judge(this);
-            RaiseEvent(new WinPointEvent(EventVersion, cmd.TeamId, cmd.PlayerId, score, status));
+            RaiseEvent(new WinPointEvent(cmd.TeamId, cmd.PlayerId, score, status));
 
             Score = score;
             Status = status;
