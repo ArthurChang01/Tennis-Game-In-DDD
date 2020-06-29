@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="App.Metrics.Abstractions" Version="4.1.0" />
+    <PackageReference Include="MediatR" Version="8.0.1" />
+  </ItemGroup>
+
 </Project>
